@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 if (process.env.NODE_ENV === "production") {
-  exports.db = db = new _sequelize.Sequelize(process.env.DATABASE_URL, {
+  db = new Sequelize(process.env.DATABASE_URL, {
     dialectOptions: {
       ssl: {
         require: true,
