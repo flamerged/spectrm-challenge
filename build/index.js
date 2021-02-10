@@ -2,11 +2,11 @@
 
 var _express = _interopRequireDefault(require("express"));
 
-var _db = _interopRequireDefault(require("./config/db"));
+var _db = require("./config/db");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-_db["default"].authenticate().then(function () {
+_db.db.authenticate().then(function () {
   return console.log("connected to ".concat(process.env.NODE_ENV, " db"));
 })["catch"](function (error) {
   return console.log("something went wrong connecting to the database: " + error);
