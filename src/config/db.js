@@ -10,12 +10,5 @@ if (process.env.NODE_ENV === "development") {
 }
 
 if (process.env.NODE_ENV === "production") {
-  db = new Sequelize(process.env.DATABASE_URL, {
-    dialect: "postgres",
-    protocol: "postgres",
-    dialectOptions: {
-      ssl: true,
-      rejectUnauthorized: false,
-    },
-  });
+  db = new Sequelize(process.env.DATABASE_URL + "?ssl=true");
 }

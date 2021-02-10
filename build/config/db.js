@@ -18,13 +18,6 @@ if (process.env.NODE_ENV === "development") {
 }
 
 if (process.env.NODE_ENV === "production") {
-  exports.db = db = new _sequelize.Sequelize(process.env.DATABASE_URL, {
-    dialect: "postgres",
-    protocol: "postgres",
-    dialectOptions: {
-      ssl: true,
-      rejectUnauthorized: false
-    }
-  });
+  exports.db = db = new _sequelize.Sequelize(process.env.DATABASE_URL + "?ssl=true");
 }
 //# sourceMappingURL=db.js.map
