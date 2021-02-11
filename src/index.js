@@ -1,5 +1,4 @@
 import express from "express";
-import regeneratorRuntime from "regenerator-runtime";
 import { db } from "./config/db";
 import models from "../models/index";
 import { v4 as uuid } from "uuid";
