@@ -1,6 +1,8 @@
 import express from "express";
-
+import bodyParser from "body-parser";
 import { db } from "./config/db";
+
+const port = process.env.PORT || 4000;
 
 db.authenticate()
   .then(() => console.log(`connected to ${process.env.NODE_ENV} db`))
@@ -8,20 +10,9 @@ db.authenticate()
     console.log("something went wrong connecting to the database: " + error)
   );
 
-const port = process.env.PORT || 4000;
-
 const app = express();
-
-// app.get("/", (req, res) => {
-//   res.status(200).json({ message: "Welcome to Node.js & Express" });
-// });
-
-// app.get("/message/:id", (req, res) => {
-//   console.log(parseInt(req.params.id) + 5);
-//   res
-//     .status(200)
-//     .json({ message: `Yes hello this is message ${req.params.id}` });
-// });
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded());
 
 // Routes todo
 
