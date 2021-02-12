@@ -47,7 +47,7 @@ For the setup locally and online a postgres database is used. [Sequelize](https:
 4. Run *heroku run yarn install*
 5. Run *heroku run sequelize-cli db:migrate*
 
-My Heroku api can be used with https://spectrm-api.herokuapp.com/
+My Heroku api can be tested at https://spectrm-api.herokuapp.com/
 
 ## API
 
