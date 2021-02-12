@@ -13,6 +13,7 @@ module.exports = {
       },
       retrievedCounter: {
         type: Sequelize.BIGINT,
+        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,

@@ -1,5 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
+const { v4: uuid } = require("uuid");
+const sanitizeHtml = require("sanitize-html");
 module.exports = (sequelize, DataTypes) => {
   class Message extends Model {
     /**
@@ -21,5 +23,13 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Message",
     }
   );
+
+  Message.addHook("beforeCreate", (message) => {
+    message.id = uuid();
+  });
+
+  Message.addHook("beforeCreate", "beforeUpdate", (message) => {
+    message.content = sanitizeHtml(message.content);
+  });
   return Message;
 };
