@@ -4,7 +4,13 @@
     "password": null,
     "database": "spectrm_api_development",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "define": {
+      "charset": "utf8",
+      "dialectOptions": {
+        "collate": "utf8_general_ci"
+      }
+    }
   },
   "test": {
     "username": "root",
@@ -19,6 +25,12 @@
     "dialectOptions": {
       "ssl": true,
       "rejectUnauthorized": false
+    },
+    "define": {
+      "charset": "utf8",
+      "dialectOptions": {
+        "collate": "utf8_general_ci"
+      }
     }
   }
 }
