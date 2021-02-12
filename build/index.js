@@ -6,8 +6,6 @@ var _db = require("./config/db");
 
 var _index = _interopRequireDefault(require("../models/index"));
 
-var _uuid = require("uuid");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -31,21 +29,22 @@ var app = (0, _express.default)();
 app.use(_express.default.json());
 app.use(_express.default.urlencoded({
   extended: true
-})); // Routes todo
+})); // Routes
 // Get all messages
 
 app.get("/messages", /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(function* (req, res) {
-    try {
-      var messages = yield Message.findAll();
-      res.status(200).send(messages);
-    } catch (error) {
+    Message.findAll().then(messages => {
+      var promises = [];
+      messages.forEach(message => promises.push(message.increment("retrievedCounter")));
+      return Promise.all(promises);
+    }).then(messages => res.status(200).send(messages)).catch(error => {
       console.log(error);
       res.status(404).json({
         status: "failed",
         error: "".concat(error)
       });
-    }
+    });
   });
 
   return function (_x, _x2) {
@@ -56,21 +55,25 @@ app.get("/messages", /*#__PURE__*/function () {
 app.get("/messages/:id", /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator(function* (req, res) {
     var id = req.params.id;
+    Message.findAll({
+      where: {
+        id
+      }
+    }).then(message => {
+      if (message.length > 0) {
+        message[0].increment("retrievedCounter");
+      } else {
+        throw new Error("Message could not be found");
+      }
 
-    try {
-      var message = yield Message.findAll({
-        where: {
-          id
-        }
-      });
       res.status(200).send(message);
-    } catch (error) {
+    }).catch(error => {
       console.log(error);
       res.status(404).json({
         status: "failed",
         error: "".concat(error)
       });
-    }
+    });
   });
 
   return function (_x3, _x4) {
@@ -83,23 +86,15 @@ app.post("/messages/", /*#__PURE__*/function () {
     var {
       content
     } = req.body;
-    console.log(req.body);
-    var id = (0, _uuid.v4)();
-
-    try {
-      var message = yield Message.create({
-        id,
-        content,
-        retrievedCounter: 0
-      });
-      res.status(201).send(message);
-    } catch (error) {
+    Message.create({
+      content
+    }).then(message => res.status(201).send(message)).catch(error => {
       console.log(error);
       res.status(400).json({
         status: "failed",
         error: "".concat(error)
       });
-    }
+    });
   });
 
   return function (_x5, _x6) {
@@ -111,25 +106,26 @@ app.put("/messages/:id", /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator(function* (req, res) {
     var changes = req.body;
     var id = req.params.id;
-
-    try {
-      var message = yield Message.update(_objectSpread({}, changes), {
-        where: {
-          id
-        },
-        returning: true
-      });
+    Message.update(_objectSpread({}, changes), {
+      where: {
+        id
+      },
+      returning: true
+    }).then(message => {
+      message = message[1][0].increment("retrievedCounter");
+      return message;
+    }).then(message => {
       res.status(202).send({
         status: "success",
-        message: message[1][0]
+        message
       });
-    } catch (error) {
+    }).catch(error => {
       console.log(error);
       res.status(400).json({
         status: "failed",
         error: "".concat(error)
       });
-    }
+    });
   });
 
   return function (_x7, _x8) {
@@ -140,29 +136,26 @@ app.put("/messages/:id", /*#__PURE__*/function () {
 app.delete("/messages/:id", /*#__PURE__*/function () {
   var _ref5 = _asyncToGenerator(function* (req, res) {
     var id = req.params.id;
-
-    try {
-      var message = yield Message.destroy({
-        where: {
-          id
-        },
-        returning: true
-      });
-
-      if (message === 0) {
+    Message.destroy({
+      where: {
+        id
+      },
+      returning: true
+    }).then(status => {
+      if (status === 0) {
         throw new Error("Message could not be found");
       }
 
       res.status(202).send({
         status: "success"
       });
-    } catch (error) {
+    }).catch(error => {
       console.log(error);
       res.status(400).json({
         status: "failed",
         error: "".concat(error)
       });
-    }
+    });
   });
 
   return function (_x9, _x10) {
