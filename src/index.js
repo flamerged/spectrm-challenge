@@ -1,15 +1,8 @@
 import express from "express";
-import { db } from "./config/db";
 import models from "../models/index";
 
 const port = process.env.PORT || 4000;
 const { Message } = models;
-
-db.authenticate()
-  .then(() => console.log(`connected to ${process.env.NODE_ENV} db`))
-  .catch((error) =>
-    console.log("something went wrong connecting to the database: " + error)
-  );
 
 const app = express();
 app.use(express.json());
@@ -61,7 +54,7 @@ app.post("/messages/", async (req, res) => {
   const { content } = req.body;
 
   Message.create({ content })
-    .then((message) => res.status(201).send(message))
+    .then((message) => res.status(201).send({ status: "success", message }))
     .catch((error) => {
       console.log(error);
       res.status(400).json({ status: "failed", error: `${error}` });

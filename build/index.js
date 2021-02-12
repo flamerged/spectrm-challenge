@@ -2,8 +2,6 @@
 
 var _express = _interopRequireDefault(require("express"));
 
-var _db = require("./config/db");
-
 var _index = _interopRequireDefault(require("../models/index"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -22,9 +20,6 @@ var port = process.env.PORT || 4000;
 var {
   Message
 } = _index.default;
-
-_db.db.authenticate().then(() => console.log("connected to ".concat(process.env.NODE_ENV, " db"))).catch(error => console.log("something went wrong connecting to the database: " + error));
-
 var app = (0, _express.default)();
 app.use(_express.default.json());
 app.use(_express.default.urlencoded({
@@ -88,7 +83,10 @@ app.post("/messages/", /*#__PURE__*/function () {
     } = req.body;
     Message.create({
       content
-    }).then(message => res.status(201).send(message)).catch(error => {
+    }).then(message => res.status(201).send({
+      status: "success",
+      message
+    })).catch(error => {
       console.log(error);
       res.status(400).json({
         status: "failed",
