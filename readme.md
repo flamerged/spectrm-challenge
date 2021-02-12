@@ -103,7 +103,23 @@ You will receive back the created message:
 }
 ```
 
-#### 3. update a message 
+#### 3. Retrieve a message
+
+Sending a get request with the message id *localhost:4000/messages/b07be3b5-039f-4220-932f-609be3cac908* returns the message in json format:
+
+```json
+[
+    {
+        "id": "b07be3b5-039f-4220-932f-609be3cac908",
+        "content": "Hello world",
+        "retrievedCounter": "4",
+        "createdAt": "2021-02-12T09:55:15.806Z",
+        "updatedAt": "2021-02-12T11:29:01.570Z"
+    }
+]
+```
+
+#### 4. Update a message 
 
 Updating a message requires the use of the message id in the request url *localhost:4000/messages/b07be3b5-039f-4220-932f-609be3cac908* (from the example above). The body in the post request should contain the changed message:
 
@@ -128,7 +144,7 @@ The API will respond with the updated message:
 }
 ```
 
-#### 4. Delte a message
+#### 5. Delete a message
 
 To delete a message a delete request needs to be sent to *localhost:4000/messages/b07be3b5-039f-4220-932f-609be3cac908* containing the id of the message to be deleted. The API returns a success or fail message:
 
