@@ -156,7 +156,10 @@ To delete a message a delete request needs to be sent to *localhost:4000/message
 }
 ```
 
+## Ideas for future improvement
 
+- Add frontend to use API
+- Add a user model that owns messages and build some sort of chat app. 
 
 
 
