@@ -47,7 +47,7 @@ For the setup locally and online a postgres database is used. [Sequelize](https:
 4. Run *heroku run yarn install*
 5. Run *heroku run sequelize-cli db:migrate*
 
-My Heroku api can be tested at https://spectrm-api.herokuapp.com/
+My Heroku api can be tested at https://spectrm-api.herokuapp.com/. 
 
 ## API
 
@@ -158,6 +158,8 @@ To delete a message a delete request needs to be sent to *localhost:4000/message
 
 ## Ideas for future improvement
 
+- Add API authenitication
+- Add encryption to message content
 - Add frontend to use API
 - Add a user model that owns messages and build some sort of chat app. 
 
