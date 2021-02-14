@@ -21,7 +21,7 @@ app.get("/messages", async (req, res) => {
       );
       return Promise.all(promises);
     })
-    .then((messages) => res.status(200).send(messages))
+    .then((messages) => res.status(200).json(messages))
     .catch((error) => {
       console.log(error);
       res.status(404).json({ status: "failed", error: `${error}` });
@@ -40,7 +40,7 @@ app.get("/messages/:id", async (req, res) => {
       } else {
         throw new Error("Message could not be found");
       }
-      res.status(200).send(message);
+      res.status(200).json(message);
     })
     .catch((error) => {
       console.log(error);
@@ -54,7 +54,7 @@ app.post("/messages/", async (req, res) => {
   const { content } = req.body;
 
   Message.create({ content })
-    .then((message) => res.status(201).send({ status: "success", message }))
+    .then((message) => res.status(201).json({ status: "success", message }))
     .catch((error) => {
       console.log(error);
       res.status(400).json({ status: "failed", error: `${error}` });
@@ -73,7 +73,7 @@ app.put("/messages/:id", async (req, res) => {
       return message;
     })
     .then((message) => {
-      res.status(202).send({ status: "success", message });
+      res.status(202).json({ status: "success", message });
     })
     .catch((error) => {
       console.log(error);
@@ -91,7 +91,7 @@ app.delete("/messages/:id", async (req, res) => {
       if (status === 0) {
         throw new Error("Message could not be found");
       }
-      res.status(202).send({ status: "success" });
+      res.status(202).json({ status: "success" });
     })
     .catch((error) => {
       console.log(error);
